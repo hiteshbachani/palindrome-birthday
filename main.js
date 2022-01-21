@@ -1,5 +1,5 @@
 function reverseString(str) {
-    var charList = str.split("");
+    var charList = str.split('');
 
     var reverseStr = charList.reverse();
     var reversedStr = reverseStr.join('');
@@ -7,20 +7,32 @@ function reverseString(str) {
 
 }
 
+
+
+// console.log(reverseString(str));
+
 function checkPalindrome(str) {
-    var reversedStr = reverseString(str); {}
+    var reversedStr = reverseString(str);
     if (str === reversedStr) {
-        console.log("yay! it's a palindrome");
+        return true
     } else {
-        console.log("nah! it's not a palindrome");
+        return false
     }
 
 }
 
-function convertsDateFromNumberToString() {
+//  console.log(checkPalindrome('oppo'));
 
 
-    var dateInStr = {
+
+function convertsDateFromNumberToString(date) {
+
+
+
+
+
+
+    var dateStr = {
         day: '',
         month: '',
         year: ''
@@ -30,51 +42,56 @@ function convertsDateFromNumberToString() {
 
 
     if (date.day < 10) {
-        dateInStr.day = '0' + date.day;
+        dateStr.day = '0' + date.day;
     } else {
-        dateInStr.day = date.day.toString();
+        dateStr.day = date.day.toString();
     }
 
     if (date.month < 10) {
-        dateInStr.month = '0' + date.month;
+        dateStr.month = '0' + date.month;
     } else {
-        dateInStr.month = date.month.toString();
+        dateStr.month = date.month.toString();
     }
 
-    dateInStr.year = date.year.toString();
+    dateStr.year = date.year.toString();
 
-    return dateInStr;
+    return dateStr;
+
+
 
 
 
 }
 
-var date = {
-    day: 30,
-    month: 11,
-    year: 1998
-};
+// console.log(convertsDateFromNumberToString(date));
+
+
+
+
 
 
 
 function dateVariations(date) {
 
-    var ddmmyyyy = date.day + date.month + date.year;
-    var mmddyyyy = date.month + date.day + date.year;
-    var yyyymmdd = date.year + date.month + date.day;
-    var ddmmyy = date.day + date.month + date.year.slice(-2);
-    var mmddyy = date.month + date.day + date.year.slice(-2);
-    var yymmdd = date.year.slice(-2) + date.month + date.day;
 
-    var returnedVariations = [ddmmyyyy, mmddyyyy, yyyymmdd, ddmmyy, mmddyy, yymmdd];
+    var dateStr = convertsDateFromNumberToString(date);
 
-    return returnedVariations;
+
+    var ddmmyyyy = dateStr.day + dateStr.month + dateStr.year;
+    var mmddyyyy = dateStr.month + dateStr.day + dateStr.year;
+    var yyyymmdd = dateStr.year + dateStr.month + dateStr.day;
+    var ddmmyy = dateStr.day + dateStr.month + dateStr.year.slice(-2);
+    var mmddyy = dateStr.month + dateStr.day + dateStr.year.slice(-2);
+    var yymmdd = dateStr.year.slice(-2) + dateStr.month + dateStr.day;
+
+    return [ddmmyyyy, mmddyyyy, yyyymmdd, ddmmyy, mmddyy, yymmdd];
+
+
 
 }
+//   console.log(dateVariations(date));
 
 
-var dateAsStr = convertsDateFromNumberToString();
-console.log(dateVariations(dateAsStr));
 
 
 function isPalindromeForAllDateVariations(date) {
@@ -93,19 +110,29 @@ function isPalindromeForAllDateVariations(date) {
 
 }
 
+//  console.log(isPalindromeForAllDateVariations(date));
+
 
 function isLeapYear(year) {
     if (year % 400 === 0) {
         return true;
-    } else if (year % 100 === 0) {
+    }
+    if (year % 100 === 0) {
         return false;
-    } else if (year % 4 === 0) {
+    }
+    if (year % 4 === 0) {
         return true;
     } else {
         return false;
     }
 
 }
+
+//  console.log(isLeapYear(2020));
+
+
+
+
 
 function incrementDates(date) {
     var day = date.day + 1;
@@ -118,42 +145,68 @@ function incrementDates(date) {
         if (isLeapYear(year)) {
             if (day > 29) {
                 day = 1;
-                maonth++;
+                month++;
             }
         } else {
             if (day > 28) {
                 day = 1;
                 month++;
             }
-
         }
-       
+
+    } else {
+        if (day > daysInMonth[month - 1]) {
+            day = 1;
+            month++;
+        }
     }
-     else {
-    if (day > daysInMonth[month - 1]) {
-        day = 1;
-        month++;
+
+
+        if (month > 12) {
+            month = 1;
+            year++;
+        }
+
+        return {
+            day: day,
+            month: month,
+            year: year
+        }
+
     }
-}
+
+// console.log(incrementDates(date));
 
 
-if (month === 12) {
-    day = 1;
-    month = 1;
-    year++;
-}
 
-return {
-    day: day,
-    month: month,
-    year: year
-}
-}
 
 
 
 function getNextPalindromeDate(date) {
+    var ctr = 0;
+    var incrementDt = incrementDates(date);
+
+    while (1) {
+        ctr = ctr + 1;
+        var checkP = isPalindromeForAllDateVariations(incrementDt);
+        if (checkP) {
+            break;
+        }
+        incrementDt = incrementDates(incrementDt);
+    }
+
+    return {ctr, incrementDt};
 
 }
 
-console.log(incrementDates(date));
+
+var date = {
+    day: 11,
+    month: 2,
+    year: 2020
+};
+
+
+
+
+console.log(getNextPalindromeDate(date));
